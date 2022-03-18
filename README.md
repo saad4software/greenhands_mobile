@@ -32,7 +32,7 @@ flutter pub get
 flutter build apk
 
 # Related Projects:
-Backend: (on-going) https://github.com/saad4software/greenhands_backend
-Frontend: (on-going) https://github.com/saad4software/greenhands_frontend
-Mobile: (on-going) https://github.com/saad4software/greenhands_mobile
+* Backend: (on-going) https://github.com/saad4software/greenhands_backend
+* Frontend: (on-going) https://github.com/saad4software/greenhands_frontend
+* Mobile: (on-going) https://github.com/saad4software/greenhands_mobile
 
