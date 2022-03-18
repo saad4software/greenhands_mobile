@@ -1,0 +1,5 @@
+{
+  "name": "Food",
+  "id": 1,
+  "icon_model?": "$entities/image_model"
+}

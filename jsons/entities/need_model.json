@@ -1,0 +1,9 @@
+{
+  "name": "food for 5 people",
+  "id": 2,
+  "images?": "$[]entities/image_model",
+  "brief?": "I need a meal for 5 people",
+  "category_model": "$entities/category_model",
+  "point": 2,
+  "granted": false
+}

@@ -1,0 +1,10 @@
+{
+  "name": "exchange point1 nn",
+  "images?": "$[]entities/image_model",
+  "lat": 19.0,
+  "lng": 14.0,
+  "brief?": "abo abdo market on mazza 86",
+  "id": 2,
+  "address": "damascus, mazza 86, next to language instaitute",
+  "needs_list?": "$[]entities/need_model"
+}
