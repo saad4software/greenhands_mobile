@@ -3,6 +3,8 @@
    <application
         android:label="greenhands_mobile"
         android:icon="@mipmap/ic_launcher">
+        <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="AIzaSyANF7XUEFQPMn79ikyoX1Mb9R7lG1DlRjw"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

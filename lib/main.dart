@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:greenhands_mobile/blocs/generic/generic_bloc.dart';
 import 'package:greenhands_mobile/screens/intro_screen.dart';
+import 'package:greenhands_mobile/screens/map_screen.dart';
 import 'utils/observer.dart';
 
 import 'blocs/api/api_bloc.dart';
@@ -15,7 +17,7 @@ void main() {
     MultiBlocProvider(
       providers: [
         BlocProvider<ApiBloc>(create: (context) => ApiBloc(apiCalls)),
-
+        BlocProvider<GenericBloc>(create: (context) => GenericBloc()),
       ],
       child: App(),
     ),

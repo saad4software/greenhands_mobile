@@ -28,8 +28,12 @@ With power comes responsibility, organizers are asked to vouch for takers and he
 3. Organizers receive verification requests from takers, and they are responsible for verifying or denying them.
 
 # Usage
+
+```bash
 flutter pub get
 flutter build apk
+```
+
 
 # Related Projects:
 * Backend: (on-going) https://github.com/saad4software/greenhands_backend
