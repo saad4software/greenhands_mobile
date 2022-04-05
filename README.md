@@ -35,6 +35,60 @@ flutter build apk
 ```
 
 
+# UX
+## first time:
+### taker:
+1. store refresh token and role and set access token.
+2. pick exchange point
+    a. map on the country (lat, lng)
+    b. name
+    c. address
+    d. brief
+   
+3. store exchange point
+
+### organizers:
+1. register form
+    a. email
+    b. password
+    c. first_name
+    d. last_name
+    e. phone
+    f. address
+    g. map on the country (lat, lng)
+   
+2. store location
+
+## everytime:
+send refresh token and get new access token
+
+### takers:
+1. 3 tabs: map, needs and notifications
+2. get exchange point, if none return to first time
+3. open map centered on exchange point
+4. get organizers between (min, max)
+   a. clicking on any organizer will show organizer details, and allow sending verification request
+   b. cannot send verification request before filling all user data fields
+5. needs tab allows adding, removing and checking needs status
+
+### organizers:
+1. 3 tabs: map, verification requests (requests) and notification
+2. get location (from profile)
+3. open map centered on location
+4. get takers and organizers between (min, max)
+   a. clicking on any organizer will show organizer details
+   b. clicking on takers point allows sending message to taker (via notification, doesn't show any information about takers)
+5. requests tab allows adding, removing and checking verification requests
+
+### givers
+1. 3 tabs: map, needs and notifications
+2. center the map on last location, if none return to first time
+3. get takers and organizers between (min, max)
+   a. can filter takers based on need category
+   b. clicking on taker point will show list of needs
+4. needs tab allows checking and removing provided needs
+
+
 # Related Projects:
 * Backend: (on-going) https://github.com/saad4software/greenhands_backend
 * Frontend: (on-going) https://github.com/saad4software/greenhands_frontend

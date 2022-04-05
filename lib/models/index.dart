@@ -1,5 +1,6 @@
 export 'responses/generic_list_response.dart';
 export 'responses/generic_response.dart';
+export 'responses/geo_location_response.dart';
 export 'entities/verification_request_model.dart';
 export 'entities/token_model.dart';
 export 'entities/category_model.dart';

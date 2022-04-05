@@ -4,15 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:greenhands_mobile/blocs/api/api_bloc.dart';
 import 'package:greenhands_mobile/blocs/generic/generic_bloc.dart';
-import 'package:greenhands_mobile/screens/edit_profile_screen.dart';
 import 'package:greenhands_mobile/screens/map_screen.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:greenhands_mobile/screens/pick_location_screen.dart';
-import 'package:greenhands_mobile/screens/user_info_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:greenhands_mobile/extensions/widget_extension.dart';
 
-class IntroScreen extends StatelessWidget {
+class UserInfoScreen extends StatelessWidget {
 
   Future<String?> _getId() async {
     var deviceInfo = DeviceInfoPlugin();
@@ -24,6 +20,8 @@ class IntroScreen extends StatelessWidget {
       return androidDeviceInfo.androidId; // unique ID on Android
     }
   }
+
+  String title = 'test title';
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +40,7 @@ class IntroScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Intro"),
+        title: Text(title),
       ),
       body: Container(
           margin: EdgeInsets.all(16),
@@ -58,7 +56,6 @@ class IntroScreen extends StatelessWidget {
                   margin: EdgeInsets.all(5),
                   child: ListTile(
                     title: Text('giver'),
-                    onTap: ()=>gotoScreen(context: context, screen: PickLocationScreen()),
                   ),
                 ),
                 Card(
@@ -78,7 +75,6 @@ class IntroScreen extends StatelessWidget {
                   margin: EdgeInsets.all(5),
                   child: ListTile(
                     title: Text('organizer'),
-                    onTap: ()=>gotoScreen(context: context, screen: EditProfileScreen()),
                   ),
                 ),
               ],

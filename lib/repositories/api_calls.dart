@@ -29,6 +29,9 @@ abstract class ApiCalls {
   @POST("register/")
   Future<GenericResponse<ProfileModel>> register(@Body() RegisterRequest request);
 
+  @GET("http://ip-api.com/json")
+  Future<GeoLocationResponse> geoLocation();
+
   @GET("points/")
   Future<GenericResponse<GenericListResponse<PointModel>>> points(@Query("page") int page, @Query("page_size") int page_size, @Query("search") String? search);
 

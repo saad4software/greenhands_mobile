@@ -1,0 +1,16 @@
+{
+  "status": "success",
+  "country": "United Kingdom",
+  "countryCode": "GB",
+  "region": "ENG",
+  "regionName": "England",
+  "city": "Maidenhead",
+  "zip": "SL6",
+  "lat": 51.5033,
+  "lon": -0.6894,
+  "timezone": "Europe/London",
+  "isp": "Mvps LTD",
+  "org": "Mvps LTD",
+  "as": "AS202448 MVPS LTD",
+  "query": "178.157.82.233"
+}

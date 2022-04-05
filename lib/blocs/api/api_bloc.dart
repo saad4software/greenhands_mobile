@@ -37,6 +37,8 @@ class ApiBloc extends Bloc<ApiEvent, ApiState> {
             else{
               emit(ApiError(res.message ?? "No message"));
             }
+          } else{
+            responses.add(res);
           }
         }
         emit(ApiDataReady(responses: responses));
