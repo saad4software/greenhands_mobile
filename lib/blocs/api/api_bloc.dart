@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:greenhands_mobile/models/responses/generic_response.dart';
 import 'package:greenhands_mobile/repositories/api_calls.dart';
+import 'package:greenhands_mobile/repositories/repository.dart';
 import 'package:meta/meta.dart';
 import 'package:equatable/equatable.dart';
 import 'package:dio/dio.dart';
@@ -14,10 +15,14 @@ part 'api_state.dart';
 
 class ApiBloc extends Bloc<ApiEvent, ApiState> {
 
-  ApiCalls apiCalls;
+  Repository repository = Repository(Repository.getClient());
 
-  ApiBloc(this.apiCalls) : super(ApiInitial()){
+  ApiBloc() : super(ApiInitial()){
     on<ApiRequest>(_onEvent);
+  }
+
+  void setToken(String? token){
+    repository = Repository(Repository.getClient(token: token));
   }
 
   void _onEvent(ApiEvent event,Emitter<ApiState> emit) async {
@@ -29,7 +34,8 @@ class ApiBloc extends Bloc<ApiEvent, ApiState> {
 
         var responses = [];
         for (Function fun in event.functions){
-          var res = await fun(apiCalls);
+          var res = await fun(repository);
+          var type = res.runtimeType;
           if (res is GenericResponse){
             if (res.code == 200){
               responses.add(res);
@@ -46,15 +52,14 @@ class ApiBloc extends Bloc<ApiEvent, ApiState> {
       }
 
     } catch(exception){
-      print("api_bloc error!!!");
-      print(exception.runtimeType);
+      print(exception.toString());
       var msg = "error";
       switch (exception.runtimeType) {
         case DioError:
         // Here's the sample to get the failed response error code and message
           final res = (exception as DioError);
-          // print(res.message);
-          msg = res.message;
+          msg = res.type.toString();
+          debugPrint(msg);
 
           break;
         default:

@@ -10,11 +10,11 @@ abstract class ApiEvent extends Equatable{
 
 
 class ApiRequest extends ApiEvent{
-  final List<Function(ApiCalls)> functions;
+  final List<Function(Repository)> functions;
 
   const ApiRequest(this.functions);
 
-  factory ApiRequest.single(Function(ApiCalls) function) => ApiRequest([function]);
+  factory ApiRequest.single(Function(Repository) function) => ApiRequest([function]);
 
   @override
   List<Object> get props => [functions];

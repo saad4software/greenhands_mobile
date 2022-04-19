@@ -8,7 +8,7 @@ part of 'api_calls.dart';
 
 class _ApiCalls implements ApiCalls {
   _ApiCalls(this._dio, {this.baseUrl}) {
-    baseUrl ??= 'http://127.0.0.1:8000/api/';
+    baseUrl ??= 'http://172.16.246.1:8000/api/';
   }
 
   final Dio _dio;
@@ -86,7 +86,7 @@ class _ApiCalls implements ApiCalls {
   }
 
   @override
-  Future<GenericResponse<GenericListResponse<PointModel>>> points(
+  Future<GenericResponse<GenericListResponse<List<PointModel>>>> points(
       page, page_size, search) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -98,20 +98,25 @@ class _ApiCalls implements ApiCalls {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<GenericResponse<GenericListResponse<PointModel>>>(
+        _setStreamType<GenericResponse<GenericListResponse<List<PointModel>>>>(
             Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, 'points/',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = GenericResponse<GenericListResponse<PointModel>>.fromJson(
-        _result.data!,
-        (json) => GenericListResponse<PointModel>.fromJson(
-            json, (json) => PointModel.fromJson(json)));
+    final value =
+        GenericResponse<GenericListResponse<List<PointModel>>>.fromJson(
+            _result.data!,
+            (json) => GenericListResponse<List<PointModel>>.fromJson(
+                json,
+                (json) => (json as List<dynamic>)
+                    .map<PointModel>(
+                        (i) => PointModel.fromJson(i as Map<String, dynamic>))
+                    .toList()));
     return value;
   }
 
   @override
-  Future<GenericResponse<GenericListResponse<NeedModel>>> needs(
+  Future<GenericResponse<GenericListResponse<List<NeedModel>>>> needs(
       page, page_size, search) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -123,20 +128,85 @@ class _ApiCalls implements ApiCalls {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<GenericResponse<GenericListResponse<NeedModel>>>(
+        _setStreamType<GenericResponse<GenericListResponse<List<NeedModel>>>>(
             Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, 'needs/',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = GenericResponse<GenericListResponse<NeedModel>>.fromJson(
-        _result.data!,
-        (json) => GenericListResponse<NeedModel>.fromJson(
-            json, (json) => NeedModel.fromJson(json)));
+    final value =
+        GenericResponse<GenericListResponse<List<NeedModel>>>.fromJson(
+            _result.data!,
+            (json) => GenericListResponse<List<NeedModel>>.fromJson(
+                json,
+                (json) => (json as List<dynamic>)
+                    .map<NeedModel>(
+                        (i) => NeedModel.fromJson(i as Map<String, dynamic>))
+                    .toList()));
     return value;
   }
 
   @override
-  Future<GenericResponse<GenericListResponse<ProfileModel>>> organizers(
+  Future<GenericResponse<GenericListResponse<List<ProfileModel>>>> organizers(
+      page, page_size, search) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'page': page,
+      r'page_size': page_size,
+      r'search': search
+    };
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(_setStreamType<
+            GenericResponse<GenericListResponse<List<ProfileModel>>>>(
+        Options(method: 'GET', headers: _headers, extra: _extra)
+            .compose(_dio.options, 'organizers/',
+                queryParameters: queryParameters, data: _data)
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value =
+        GenericResponse<GenericListResponse<List<ProfileModel>>>.fromJson(
+            _result.data!,
+            (json) => GenericListResponse<List<ProfileModel>>.fromJson(
+                json,
+                (json) => (json as List<dynamic>)
+                    .map<ProfileModel>(
+                        (i) => ProfileModel.fromJson(i as Map<String, dynamic>))
+                    .toList()));
+    return value;
+  }
+
+  @override
+  Future<GenericResponse<GenericListResponse<List<CategoryModel>>>> categories(
+      page, page_size, search) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'page': page,
+      r'page_size': page_size,
+      r'search': search
+    };
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(_setStreamType<
+            GenericResponse<GenericListResponse<List<CategoryModel>>>>(
+        Options(method: 'GET', headers: _headers, extra: _extra)
+            .compose(_dio.options, 'categories/',
+                queryParameters: queryParameters, data: _data)
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value =
+        GenericResponse<GenericListResponse<List<CategoryModel>>>.fromJson(
+            _result.data!,
+            (json) => GenericListResponse<List<CategoryModel>>.fromJson(
+                json,
+                (json) => (json as List<dynamic>)
+                    .map<CategoryModel>((i) =>
+                        CategoryModel.fromJson(i as Map<String, dynamic>))
+                    .toList()));
+    return value;
+  }
+
+  @override
+  Future<GenericResponse<GenericListResponse<List<ImageModel>>>> userPhotosList(
       page, page_size, search) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -148,65 +218,20 @@ class _ApiCalls implements ApiCalls {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<GenericResponse<GenericListResponse<ProfileModel>>>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, 'organizers/',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = GenericResponse<GenericListResponse<ProfileModel>>.fromJson(
-        _result.data!,
-        (json) => GenericListResponse<ProfileModel>.fromJson(
-            json, (json) => ProfileModel.fromJson(json)));
-    return value;
-  }
-
-  @override
-  Future<GenericResponse<GenericListResponse<CategoryModel>>> categories(
-      page, page_size, search) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'page': page,
-      r'page_size': page_size,
-      r'search': search
-    };
-    queryParameters.removeWhere((k, v) => v == null);
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<GenericResponse<GenericListResponse<CategoryModel>>>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, 'categories/',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = GenericResponse<GenericListResponse<CategoryModel>>.fromJson(
-        _result.data!,
-        (json) => GenericListResponse<CategoryModel>.fromJson(
-            json, (json) => CategoryModel.fromJson(json)));
-    return value;
-  }
-
-  @override
-  Future<GenericResponse<GenericListResponse<ImageModel>>> userPhotosList(
-      page, page_size, search) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'page': page,
-      r'page_size': page_size,
-      r'search': search
-    };
-    queryParameters.removeWhere((k, v) => v == null);
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<GenericResponse<GenericListResponse<ImageModel>>>(
+        _setStreamType<GenericResponse<GenericListResponse<List<ImageModel>>>>(
             Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, 'user/photos/',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = GenericResponse<GenericListResponse<ImageModel>>.fromJson(
-        _result.data!,
-        (json) => GenericListResponse<ImageModel>.fromJson(
-            json, (json) => ImageModel.fromJson(json)));
+    final value =
+        GenericResponse<GenericListResponse<List<ImageModel>>>.fromJson(
+            _result.data!,
+            (json) => GenericListResponse<List<ImageModel>>.fromJson(
+                json,
+                (json) => (json as List<dynamic>)
+                    .map<ImageModel>(
+                        (i) => ImageModel.fromJson(i as Map<String, dynamic>))
+                    .toList()));
     return value;
   }
 
@@ -263,7 +288,7 @@ class _ApiCalls implements ApiCalls {
   }
 
   @override
-  Future<GenericResponse<GenericListResponse<NotificationModel>>>
+  Future<GenericResponse<GenericListResponse<List<NotificationModel>>>>
       userNotifications(page, page_size, search) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -274,23 +299,27 @@ class _ApiCalls implements ApiCalls {
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<GenericResponse<GenericListResponse<NotificationModel>>>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, 'user/notifications/',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_setStreamType<
+            GenericResponse<GenericListResponse<List<NotificationModel>>>>(
+        Options(method: 'GET', headers: _headers, extra: _extra)
+            .compose(_dio.options, 'user/notifications/',
+                queryParameters: queryParameters, data: _data)
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value =
-        GenericResponse<GenericListResponse<NotificationModel>>.fromJson(
+        GenericResponse<GenericListResponse<List<NotificationModel>>>.fromJson(
             _result.data!,
-            (json) => GenericListResponse<NotificationModel>.fromJson(
-                json, (json) => NotificationModel.fromJson(json)));
+            (json) => GenericListResponse<List<NotificationModel>>.fromJson(
+                json,
+                (json) => (json as List<dynamic>)
+                    .map<NotificationModel>((i) =>
+                        NotificationModel.fromJson(i as Map<String, dynamic>))
+                    .toList()));
     return value;
   }
 
   @override
-  Future<GenericResponse<GenericListResponse<NeedModel>>> giverProvideList(
-      page, page_size, search) async {
+  Future<GenericResponse<GenericListResponse<List<NeedModel>>>>
+      giverProvideList(page, page_size, search) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'page': page,
@@ -301,15 +330,20 @@ class _ApiCalls implements ApiCalls {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<GenericResponse<GenericListResponse<NeedModel>>>(
+        _setStreamType<GenericResponse<GenericListResponse<List<NeedModel>>>>(
             Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, 'giver/provide/',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = GenericResponse<GenericListResponse<NeedModel>>.fromJson(
-        _result.data!,
-        (json) => GenericListResponse<NeedModel>.fromJson(
-            json, (json) => NeedModel.fromJson(json)));
+    final value =
+        GenericResponse<GenericListResponse<List<NeedModel>>>.fromJson(
+            _result.data!,
+            (json) => GenericListResponse<List<NeedModel>>.fromJson(
+                json,
+                (json) => (json as List<dynamic>)
+                    .map<NeedModel>(
+                        (i) => NeedModel.fromJson(i as Map<String, dynamic>))
+                    .toList()));
     return value;
   }
 
@@ -332,7 +366,7 @@ class _ApiCalls implements ApiCalls {
   }
 
   @override
-  Future<GenericResponse<GenericListResponse<NeedModel>>> takerNeedsList(
+  Future<GenericResponse<GenericListResponse<List<NeedModel>>>> takerNeedsList(
       page, page_size, search) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -344,15 +378,20 @@ class _ApiCalls implements ApiCalls {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<GenericResponse<GenericListResponse<NeedModel>>>(
+        _setStreamType<GenericResponse<GenericListResponse<List<NeedModel>>>>(
             Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, 'taker/needs/',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = GenericResponse<GenericListResponse<NeedModel>>.fromJson(
-        _result.data!,
-        (json) => GenericListResponse<NeedModel>.fromJson(
-            json, (json) => NeedModel.fromJson(json)));
+    final value =
+        GenericResponse<GenericListResponse<List<NeedModel>>>.fromJson(
+            _result.data!,
+            (json) => GenericListResponse<List<NeedModel>>.fromJson(
+                json,
+                (json) => (json as List<dynamic>)
+                    .map<NeedModel>(
+                        (i) => NeedModel.fromJson(i as Map<String, dynamic>))
+                    .toList()));
     return value;
   }
 
@@ -427,7 +466,7 @@ class _ApiCalls implements ApiCalls {
   }
 
   @override
-  Future<GenericResponse<GenericListResponse<VerificationRequestModel>>>
+  Future<GenericResponse<GenericListResponse<List<VerificationRequestModel>>>>
       takerVerificationRequestsList(page, page_size, search) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -439,16 +478,22 @@ class _ApiCalls implements ApiCalls {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(_setStreamType<
-            GenericResponse<GenericListResponse<VerificationRequestModel>>>(
+            GenericResponse<
+                GenericListResponse<List<VerificationRequestModel>>>>(
         Options(method: 'GET', headers: _headers, extra: _extra)
             .compose(_dio.options, 'taker/verify/',
                 queryParameters: queryParameters, data: _data)
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value =
-        GenericResponse<GenericListResponse<VerificationRequestModel>>.fromJson(
-            _result.data!,
-            (json) => GenericListResponse<VerificationRequestModel>.fromJson(
-                json, (json) => VerificationRequestModel.fromJson(json)));
+    final value = GenericResponse<
+            GenericListResponse<List<VerificationRequestModel>>>.fromJson(
+        _result.data!,
+        (json) => GenericListResponse<List<VerificationRequestModel>>.fromJson(
+            json,
+            (json) => (json as List<dynamic>)
+                .map<VerificationRequestModel>((i) =>
+                    VerificationRequestModel.fromJson(
+                        i as Map<String, dynamic>))
+                .toList()));
     return value;
   }
 
@@ -472,23 +517,29 @@ class _ApiCalls implements ApiCalls {
   }
 
   @override
-  Future<GenericResponse<GenericListResponse<VerificationRequestModel>>>
+  Future<GenericResponse<GenericListResponse<List<VerificationRequestModel>>>>
       organizerVerificationRequestsList() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(_setStreamType<
-            GenericResponse<GenericListResponse<VerificationRequestModel>>>(
+            GenericResponse<
+                GenericListResponse<List<VerificationRequestModel>>>>(
         Options(method: 'GET', headers: _headers, extra: _extra)
             .compose(_dio.options, 'organizer/requests/',
                 queryParameters: queryParameters, data: _data)
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value =
-        GenericResponse<GenericListResponse<VerificationRequestModel>>.fromJson(
-            _result.data!,
-            (json) => GenericListResponse<VerificationRequestModel>.fromJson(
-                json, (json) => VerificationRequestModel.fromJson(json)));
+    final value = GenericResponse<
+            GenericListResponse<List<VerificationRequestModel>>>.fromJson(
+        _result.data!,
+        (json) => GenericListResponse<List<VerificationRequestModel>>.fromJson(
+            json,
+            (json) => (json as List<dynamic>)
+                .map<VerificationRequestModel>((i) =>
+                    VerificationRequestModel.fromJson(
+                        i as Map<String, dynamic>))
+                .toList()));
     return value;
   }
 

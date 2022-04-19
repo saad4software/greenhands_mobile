@@ -9,15 +9,15 @@ class AnonymousLoginRequest {
 
   const AnonymousLoginRequest({
     required this.print,
-    required this.role,
+    this.role,
   });
 
   final String print;
-  final String role;
+  final String? role;
 
   factory AnonymousLoginRequest.fromJson(Map<String,dynamic> json) => AnonymousLoginRequest(
     print: json['print'] as String,
-    role: json['role'] as String
+    role: json['role'] != null ? json['role'] as String : null
   );
   
   Map<String, dynamic> toJson() => {
@@ -33,10 +33,10 @@ class AnonymousLoginRequest {
 
   AnonymousLoginRequest copyWith({
     String? print,
-    String? role
+    Optional<String?>? role
   }) => AnonymousLoginRequest(
     print: print ?? this.print,
-    role: role ?? this.role,
+    role: checkOptional(role, this.role),
   );
 
   @override

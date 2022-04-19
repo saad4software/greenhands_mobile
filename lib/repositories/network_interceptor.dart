@@ -8,20 +8,32 @@ class NetworkInterceptor extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     super.onRequest(options, handler);
-    debugPrint('REQUEST[${options.method}] => PATH: ${options.uri.toString()}');
+    debugPrint("--> ${options.method.toUpperCase()} ${options.baseUrl + options.path}");
+    // options.headers.forEach((key, value) {debugPrint("$key $value");}); // printing headers if needed
+    if (options.data != null && options.method != "GET") {
+      debugPrint("Body:\n${options.data is Map<String, dynamic> ? printJson(options.data) : options.data}");
+    }
+    debugPrint("--> END ${options.method}");
+
   }
 
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) {
     super.onError(err, handler);
     debugPrint('ERROR[${err.response?.statusCode}] => PATH: ${err.requestOptions.uri.toString()}');
+    debugPrint("<-- ${err.message} ${(err.requestOptions.uri.toString())}");
+    if (err.response?.data != null){
+      debugPrint("${err.response?.data is Map<String, dynamic> ? printJson(err.response?.data) : err.response?.data}");
+    }
+    debugPrint("<-- End error");
   }
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
     super.onResponse(response, handler);
-    debugPrint('RESPONSE[${response.statusCode}] => PATH: ${response.requestOptions.uri.toString()}');
-    // debugPrint('RESPONSE => BODY: ${printJson(response.data as Map<String, dynamic>)}' );
+    debugPrint("<-- ${response.statusCode} ${(response.requestOptions.uri.toString())}");
+    debugPrint("Body:\n${response.data is Map<String, dynamic> ? printJson(response.data) : response.data}");
+    debugPrint("<-- END HTTP");
   }
 
   String printJson(Map<String, dynamic> map){

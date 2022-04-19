@@ -3,6 +3,7 @@ part of 'generic_bloc.dart';
 @immutable
 abstract class GenericState extends Equatable{
   List<dynamic> responses = [];
+  String? msg;
   GenericState();
 
   T? getValue<T>() {
@@ -23,12 +24,13 @@ class GenericInitial extends GenericState {}
 class GenericLoading extends GenericState{}
 
 class GenericReady extends GenericState{
-  GenericReady({required responses}){
+  GenericReady({required responses, String? msg}){
     super.responses = responses;
+    super.msg = msg;
   }
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [responses];
 }
 
 class GenericError extends GenericState{

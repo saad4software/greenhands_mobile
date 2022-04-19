@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:greenhands_mobile/blocs/api/api_bloc.dart';
+import 'package:greenhands_mobile/extensions/widget_extension.dart';
 import 'package:greenhands_mobile/models/index.dart';
 
 class PickLocationScreen extends StatefulWidget {
-  const PickLocationScreen();
+  const PickLocationScreen({Key? key}) : super(key: key);
+
 
   @override
   State<StatefulWidget> createState() => PickLocationScreenState();
@@ -73,7 +75,7 @@ class PickLocationScreenState extends State<PickLocationScreen> {
       markerId: MarkerId(point.toString()),
       position: point,
       infoWindow: const InfoWindow(
-        title: 'I am a marker',
+        title: 'At this exact point',
       ),
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueMagenta),
       onTap: () => _onMarkerTapped(markerId),
@@ -93,57 +95,71 @@ class PickLocationScreenState extends State<PickLocationScreen> {
 
 
     final MarkerId? selectedId = selectedMarker;
-    return Stack(children: <Widget>[
-      Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Expanded(
-              child: BlocListener<ApiBloc, ApiState>(
-                listener: (context, state) {
-                  if(state is ApiDataReady){
-                    GeoLocationResponse response = state.getValue();
-                    controller?.animateCamera(
-                      CameraUpdate.newCameraPosition(
-                        CameraPosition(target: LatLng(response.lat, response.lon),zoom: 10),
-                      ),
-                    );
-                  }
-                },
-                child: GoogleMap(
-                  onMapCreated: _onMapCreated,
-                  initialCameraPosition: const CameraPosition(target: LatLng(0, 0)),
-                  markers: Set<Marker>.of(markers.values),
-                  myLocationEnabled: true,
-                  onTap: _handleTap,
-                ),
-              )
-          ),
-        ],
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("pick_location"),
+        actions: [ElevatedButton(child: Text("save"), onPressed: (){
+          LatLng? myPoint = markers[MarkerId("my_point")]?.position;
+          if(myPoint != null){
+            Navigator.pop(context, myPoint);
+          }else {
+            widget.toast(context, "Please pick location");
+
+          }
+        })],
       ),
-      Visibility(
-        visible: markerPosition != null,
-        child: Container(
-          color: Colors.white70,
-          height: 30,
-          padding: const EdgeInsets.only(left: 12, right: 12),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              if (markerPosition == null)
-                Container()
-              else
-                Expanded(child: Text('lat: ${markerPosition!.latitude}')),
-              if (markerPosition == null)
-                Container()
-              else
-                Expanded(child: Text('lng: ${markerPosition!.longitude}')),
-            ],
+      body: Stack(children: <Widget>[
+        Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Expanded(
+                child: BlocListener<ApiBloc, ApiState>(
+                  listener: (context, state) {
+                    if(state is ApiDataReady){
+                      GeoLocationResponse response = state.getValue();
+                      controller?.animateCamera(
+                        CameraUpdate.newCameraPosition(
+                          CameraPosition(target: LatLng(response.lat, response.lon),zoom: 10),
+                        ),
+                      );
+                    }
+                  },
+                  child: GoogleMap(
+                    onMapCreated: _onMapCreated,
+                    initialCameraPosition: const CameraPosition(target: LatLng(0, 0)),
+                    markers: Set<Marker>.of(markers.values),
+                    myLocationEnabled: true,
+                    onTap: _handleTap,
+                  ),
+                )
+            ),
+          ],
+        ),
+        Visibility(
+          visible: markerPosition != null,
+          child: Container(
+            color: Colors.white70,
+            height: 30,
+            padding: const EdgeInsets.only(left: 12, right: 12),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                if (markerPosition == null)
+                  Container()
+                else
+                  Expanded(child: Text('lat: ${markerPosition!.latitude}')),
+                if (markerPosition == null)
+                  Container()
+                else
+                  Expanded(child: Text('lng: ${markerPosition!.longitude}')),
+              ],
+            ),
           ),
         ),
-      ),
-    ]);
+      ]),
+    );
   }
 }
 

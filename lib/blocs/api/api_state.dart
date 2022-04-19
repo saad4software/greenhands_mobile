@@ -20,7 +20,7 @@ class ApiDataReady extends ApiState{
     for (dynamic res in responses) {
       if (res is GenericResponse<T>){
         return res.data;
-      } else {
+      } else if (res is T){
         return res;
       }
     }
