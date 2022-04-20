@@ -1,20 +1,33 @@
 import 'package:flutter/material.dart';
 
 class FormFieldWidget extends StatelessWidget {
-  const FormFieldWidget({Key? key}) : super(key: key);
+  const FormFieldWidget({
+    this.controller,
+    this.label,
+    this.validator,
+    this.isPassword = false,
+    this.keyboard,
+    Key? key}) : super(key: key);
 
-  final Function(String) validator;
-  final String label;
+  final Function(String?)? validator;
+  final String? label;
+  final bool isPassword;
+  final TextInputType? keyboard;
+  final TextEditingController? controller;
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return TextFormField(
+      controller: controller,
       textInputAction: TextInputAction.next,
-      validator: (value)=>value.isValidValue() ? null : "invalid_value",
-      decoration: const InputDecoration(
-        label: Text("first_name"),
-        border: OutlineInputBorder(),
+      validator: (value)=>validator?.call(value),
+      obscureText: isPassword,
+      obscuringCharacter: "*",
+      keyboardType: keyboard,
+      autovalidateMode: validator == null ? AutovalidateMode.disabled : AutovalidateMode.onUserInteraction,
+      decoration: InputDecoration(
+        label: Text(label ?? ""),
+        border: const OutlineInputBorder(),
       ),
       style: const TextStyle(
         fontSize: 18,

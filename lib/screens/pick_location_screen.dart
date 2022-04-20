@@ -9,8 +9,9 @@ import 'package:greenhands_mobile/extensions/widget_extension.dart';
 import 'package:greenhands_mobile/models/index.dart';
 
 class PickLocationScreen extends StatefulWidget {
-  const PickLocationScreen({Key? key}) : super(key: key);
+  const PickLocationScreen({this.position, Key? key}) : super(key: key);
 
+  final LatLng? position;
 
   @override
   State<StatefulWidget> createState() => PickLocationScreenState();
@@ -23,12 +24,7 @@ class PickLocationScreenState extends State<PickLocationScreen> {
 
   ApiBloc? apiBloc;
 
-  static const LatLng center = LatLng(-33.86711, 151.1947171);
-
   GoogleMapController? controller;
-
-  // Location _location = Location();
-  // Position currentLocation;
 
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   MarkerId? selectedMarker;
@@ -37,7 +33,14 @@ class PickLocationScreenState extends State<PickLocationScreen> {
 
   void _onMapCreated(GoogleMapController controller) {
     this.controller = controller;
-    apiBloc?.add(ApiRequest([(repository) => repository.geoLocation()]));
+    if(widget.position == null){
+      apiBloc?.add(ApiRequest([(repository) => repository.geoLocation()]));
+    } else{
+      _handleTap(widget.position!);
+      animateCamera(widget.position!);
+    }
+
+
   }
 
   @override
@@ -88,6 +91,13 @@ class PickLocationScreenState extends State<PickLocationScreen> {
     });
   }
 
+  void animateCamera(LatLng position){
+    controller?.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(target: position,zoom: 10),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -118,11 +128,8 @@ class PickLocationScreenState extends State<PickLocationScreen> {
                   listener: (context, state) {
                     if(state is ApiDataReady){
                       GeoLocationResponse response = state.getValue();
-                      controller?.animateCamera(
-                        CameraUpdate.newCameraPosition(
-                          CameraPosition(target: LatLng(response.lat, response.lon),zoom: 10),
-                        ),
-                      );
+                      animateCamera(LatLng(response.lat, response.lon));
+
                     }
                   },
                   child: GoogleMap(

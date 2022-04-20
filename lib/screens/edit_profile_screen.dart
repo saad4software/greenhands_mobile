@@ -5,6 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:greenhands_mobile/blocs/generic/generic_bloc.dart';
 import 'package:greenhands_mobile/extensions/widget_extension.dart';
 import 'package:greenhands_mobile/screens/pick_location_screen.dart';
+import 'package:greenhands_mobile/widgets/form_field_widget.dart';
 import 'package:greenhands_mobile/widgets/map_position_widget.dart';
 import 'package:greenhands_mobile/extensions/validators_extension.dart';
 
@@ -23,6 +24,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   LatLng? position;
 
   final genericBloc = GenericBloc();
+
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final confirmController = TextEditingController();
+  final firstNameController = TextEditingController();
+  final lastNameController = TextEditingController();
+  final mobileController = TextEditingController();
+  final addressController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -43,123 +52,79 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   const SizedBox(height: 24,),
                   const Text("organizer_register_form", textAlign: TextAlign.center,),
                   const SizedBox(height: 16,),
-                  TextFormField(
-                    textInputAction: TextInputAction.next,
-                    keyboardType: TextInputType.emailAddress,
-                    autofocus: true,
-                    validator: (value)=>value.isValidEmail() ? null : "invalid_email",
-                    decoration: const InputDecoration(
-                      label: Text("email"),
-                      border: OutlineInputBorder(),
-                    ),
-                    style: const TextStyle(
-                      fontSize: 18,
-                      color: Colors.black,
-                    ),
+                  FormFieldWidget(
+                    controller: emailController,
+                    label: "email",
+                    validator: (val)=>val.validateEmail(),
+                    keyboard: TextInputType.emailAddress,
                   ),
                   const SizedBox(height: 16,),
 
-                  TextFormField(
-                    textInputAction: TextInputAction.next,
-                    obscuringCharacter: '*',
-                    obscureText: true,
-                    validator: (value)=>value.isValidValue() ? null : "invalid_value",
-                    decoration: const InputDecoration(
-                      label: Text("password"),
-                      border: OutlineInputBorder(),
-                    ),
-                    style: const TextStyle(
-                      fontSize: 18,
-                      color: Colors.black,
-                    ),
+                  FormFieldWidget(
+                    controller: passwordController,
+                    label: "password",
+                    validator: (val)=>val.validateRequired(),
+                    isPassword: true,
                   ),
                   const SizedBox(height: 16,),
 
-                  TextFormField(
-                    textInputAction: TextInputAction.next,
-                    obscuringCharacter: '*',
-                    obscureText: true,
-                    validator: (value)=>value.isValidValue() ? null : "invalid_value",
-                    decoration: const InputDecoration(
-                      label: Text("confirm_password"),
-                      border: OutlineInputBorder(),
-                    ),
-                    style: const TextStyle(
-                      fontSize: 18,
-                      color: Colors.black,
-                    ),
+                  FormFieldWidget(
+                    label: "confirm_password",
+                    validator: (val)=>val == passwordController.text ? null : "no_match",
+                    isPassword: true,
                   ),
                   const SizedBox(height: 16,),
 
-                  TextFormField(
-                    textInputAction: TextInputAction.next,
-                    validator: (value)=>value.isValidValue() ? null : "invalid_value",
-                    decoration: const InputDecoration(
-                      label: Text("first_name"),
-                      border: OutlineInputBorder(),
-                    ),
-                    style: const TextStyle(
-                      fontSize: 18,
-                      color: Colors.black,
-                    ),
+                  FormFieldWidget(
+                    controller: firstNameController,
+                    label: "first_name",
+                    validator: (val)=>val.validateName(),
                   ),
                   const SizedBox(height: 8,),
 
-                  TextFormField(
-                    textInputAction: TextInputAction.next,
-                    validator: (value)=>value.isValidValue() ? null : "invalid_value",
-                    decoration: const InputDecoration(
-                      label: Text("last_name"),
-                      border: OutlineInputBorder(),
-                    ),
-                    style: const TextStyle(
-                      fontSize: 18,
-                      color: Colors.black,
-                    ),
+                  FormFieldWidget(
+                    controller: lastNameController,
+                    label: "last_name",
+                    validator: (val)=>val.validateName(),
                   ),
                   const SizedBox(height: 16,),
 
-                  TextFormField(
-                    textInputAction: TextInputAction.next,
-                    keyboardType: TextInputType.phone,
-                    validator: (value)=>value.isValidMobile() ? null : "invalid_mobile",
-                    decoration: const InputDecoration(
-                      label: Text("phone"),
-                      border: OutlineInputBorder(),
-                    ),
-                    style: const TextStyle(
-                      fontSize: 18,
-                      color: Colors.black,
-                    ),
+                  FormFieldWidget(
+                    controller: mobileController,
+                    label: "mobile",
+                    validator: (val)=>val.validateMobile(),
                   ),
                   const SizedBox(height: 16,),
 
-                  TextFormField(
-                    validator: (value)=>value.isValidValue() ? null : "invalid_value",
-                    decoration: const InputDecoration(
-                      label: Text("address"),
-                      border: OutlineInputBorder(),
-                    ),
-                    style: const TextStyle(
-                      fontSize: 18,
-                      color: Colors.black,
-                    ),
+                  FormFieldWidget(
+                    controller: addressController,
+                    label: "address",
+                    validator: (val)=>val.validateName(),
                   ),
                   const SizedBox(height: 16,),
 
                   BlocBuilder<GenericBloc, GenericState>(
                     builder: (context, state) {
                       return SizedBox(
-                        child: MapPositionWidget(
-                          position: position,
-
+                        child: FormField<LatLng>(
+                          builder: (state) {
+                            return Column(
+                              children: [
+                                Expanded(
+                                  child: MapPositionWidget(
+                                    position: position,
+                                  ),
+                                ),
+                              ],
+                            );
+                          }
                         ),
                         height: 150,
                       );
                     },
                   ),
                   ElevatedButton( child: const Text("pick_location"), onPressed: () async {
-                    LatLng result = await widget.gotoScreen(context: context, screen: const PickLocationScreen());
+                    LatLng result = await widget.gotoScreen(context: context, screen: PickLocationScreen(position: position,));
                     genericBloc.add(GenericEvent.single((){
                       position = result;
                     }));

@@ -2,15 +2,17 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:greenhands_mobile/blocs/api/api_bloc.dart';
-import 'package:greenhands_mobile/blocs/generic/generic_bloc.dart';
-import 'package:greenhands_mobile/models/index.dart';
 
 
 class MapPositionWidget extends StatefulWidget {
-  MapPositionWidget({this.position, this.onTab, Key? key}) : super(key: key);
+  MapPositionWidget({
+    this.position,
+    this.onTab,
+    Key? key
+  }) : super(key: key);
+
+
 
   LatLng? position;
   Function(LatLng)? onTab;
@@ -22,6 +24,7 @@ class MapPositionWidget extends StatefulWidget {
 class _MapPositionWidgetState extends State<MapPositionWidget> {
   GoogleMapController? controller;
 
+  FormFieldState? status;
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
 
   @override
@@ -46,6 +49,8 @@ class _MapPositionWidgetState extends State<MapPositionWidget> {
           icon: BitmapDescriptor.defaultMarkerWithHue(
               BitmapDescriptor.hueMagenta),
         );
+        status?.didChange(widget.position);
+
         setState(() {
           markers[markerId] = marker;
         });
@@ -54,9 +59,7 @@ class _MapPositionWidgetState extends State<MapPositionWidget> {
     }
     if(controller != null){
       setupMap(controller!);
-      debugPrint("got called");
     }
-
 
     return Container(
       padding: const EdgeInsets.all(8.0),
