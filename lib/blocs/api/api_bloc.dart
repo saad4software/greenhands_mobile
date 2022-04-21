@@ -28,20 +28,20 @@ class ApiBloc extends Bloc<ApiEvent, ApiState> {
   void _onEvent(ApiEvent event,Emitter<ApiState> emit) async {
     emit(ApiDataLoading());
     try{
-      print("Api event");
+      debugPrint("Api event");
       if (event is ApiRequest){
-        print("Api request");
+        debugPrint("Api request");
 
         var responses = [];
         for (Function fun in event.functions){
           var res = await fun(repository);
-          var type = res.runtimeType;
+
           if (res is GenericResponse){
-            if (res.code == 200){
+            if (res.status == "success"){
               responses.add(res);
             }
             else{
-              emit(ApiError(res.message ?? "No message"));
+              emit(ApiError(res.message ?? "no_message"));
             }
           } else{
             responses.add(res);
@@ -52,7 +52,7 @@ class ApiBloc extends Bloc<ApiEvent, ApiState> {
       }
 
     } catch(exception){
-      print(exception.toString());
+      debugPrint(exception.toString());
       var msg = "error";
       switch (exception.runtimeType) {
         case DioError:

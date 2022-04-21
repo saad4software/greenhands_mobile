@@ -23,7 +23,9 @@ class Repository {
   static Dio getClient({String? token}){
     var dio = Dio(); // with default Options
     dio.options.headers["Content-Type"] = "application/json";
-    dio.options.headers["Authorization"] = "Bearer $token";
+    if(token != null){
+      dio.options.headers["Authorization"] = "Bearer $token";
+    }
     dio.options.connectTimeout = 5000; //5s
     dio.options.receiveTimeout = 3000;
     dio.interceptors.add(NetworkInterceptor());
@@ -69,19 +71,29 @@ class Repository {
     return response;
   }
 
-  Future<GenericResponse<ProfileModel>> register({
+  Future<GenericResponse<ProfileModel>> register ({
     email,
-    role,
     address,
     password,
-    print,
     firstName,
     lastName,
     phone,
     lat,
     lng,
-  }){
-    var request = RegisterRequest(email: email, role: role, address: address, password: password, print: print, firstName: firstName, lastName: lastName, phone: phone, lat: lat, lng: lng);
+  }) async {
+    var request = RegisterRequest(
+        email: email,
+        role: "O",
+        address: address,
+        password: password,
+        print: await _getId() ?? "",
+        firstName: firstName,
+        lastName: lastName,
+        phone: phone,
+        lat: lat,
+        lng: lng
+    );
+    debugPrint(request.toString());
     return apiCalls.register(request);
   }
 

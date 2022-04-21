@@ -5,7 +5,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:greenhands_mobile/blocs/api/api_bloc.dart';
 import 'package:greenhands_mobile/blocs/generic/generic_bloc.dart';
 import 'package:greenhands_mobile/extensions/widget_extension.dart';
+import 'package:greenhands_mobile/models/entities/profile_model.dart';
 import 'package:greenhands_mobile/screens/pick_location_screen.dart';
+import 'package:greenhands_mobile/screens/unconfirmed_account_screen.dart';
 import 'package:greenhands_mobile/widgets/form_field_widget.dart';
 import 'package:greenhands_mobile/widgets/map_position_widget.dart';
 import 'package:greenhands_mobile/extensions/validators_extension.dart';
@@ -39,7 +41,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     final genericBloc = GenericBloc();
 
 
-    return Scaffold(
+    return BlocListener<ApiBloc, ApiState>(
+    listener: (context, state) {
+      if(state is ApiDataReady && state.getValue<ProfileModel>() != null){
+        widget.gotoScreen(context: context, screen:const UnconfirmedAccountScreen());
+      }
+    },
+    child: Scaffold(
       appBar: AppBar(
         title: const Text(appTitle),
       ),
@@ -178,7 +186,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             )
         ),
       ),
-    );
+    ),
+);
   }
 }
 
