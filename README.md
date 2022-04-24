@@ -38,14 +38,13 @@ flutter build apk
 # UX
 ## first time:
 ### taker:
-1. store refresh token and role and set access token.
+1. send print with role="T"
 2. pick exchange point
     a. map on the country (lat, lng)
     b. name
     c. address
     d. brief
    
-3. store exchange point
 
 ### organizers:
 1. register form
@@ -57,10 +56,12 @@ flutter build apk
     f. address
     g. map on the country (lat, lng)
    
-2. store location
 
 ## everytime:
-send refresh token and get new access token
+send the print with role=null, possible scenarios:
+1. get token with role, proceed based on role
+2. get error, return to first time
+3. get unverified, ask the organizer to wait for admin approval
 
 ### takers:
 1. 3 tabs: map, needs and notifications
@@ -72,7 +73,7 @@ send refresh token and get new access token
 5. needs tab allows adding, removing and checking needs status
 
 ### organizers:
-1. 3 tabs: map, verification requests (requests) and notification
+1. 3 tabs: map, vouch requests (requests) and notification
 2. get location (from profile)
 3. open map centered on location
 4. get takers and organizers between (min, max)
