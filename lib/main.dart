@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:greenhands_mobile/blocs/generic/generic_bloc.dart';
 import 'package:greenhands_mobile/screens/intro_screen.dart';
 import 'package:greenhands_mobile/screens/map_screen.dart';
+import 'package:greenhands_mobile/extensions/widget_extension.dart';
 import 'package:greenhands_mobile/screens/splash_screen.dart';
 import 'utils/observer.dart';
 
@@ -14,6 +15,7 @@ void main() {
 
   Bloc.observer = Observer();
   runApp(
+
     /// global access blocs
     MultiBlocProvider(
       providers: [
@@ -23,6 +25,7 @@ void main() {
     ),
   );
 }
+
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
 
@@ -32,7 +35,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       title: 'Green hands',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
         // brightness: Brightness.dark,
         // primaryColor: Colors.lightBlue[800],
 
@@ -49,15 +52,22 @@ class App extends StatelessWidget {
       ),
       home: Stack(
         children: [
-          SplashScreen(),
-          BlocBuilder<ApiBloc, ApiState>(
+          const SplashScreen(),
+          BlocConsumer<ApiBloc, ApiState>(
+            listener: (context, state) {
+              if(state is ApiError && state.message != null){
+                toast(context, state.message!);
+              }
+
+            },
             builder: (context, state) => (state is ApiDataLoading) ?
             Container(
-              color: Colors.black26,
+              color: Colors.white38,
               child: const Center(child: CircularProgressIndicator(),),
             )
                 : Container(),
           ),
+
         ],
       ),
     );

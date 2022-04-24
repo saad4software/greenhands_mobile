@@ -27,21 +27,44 @@ abstract class ApiCalls {
   Future<GeoLocationResponse> geoLocation();
 
   @GET("points/")
-  Future<GenericResponse<GenericListResponse<List<PointModel>>>> points(@Query("page") int page, @Query("page_size") int page_size, @Query("search") String? search);
+  Future<GenericResponse<GenericListResponse<List<PointModel>>>> points(
+      @Query("page") int page,
+      @Query("page_size") int pageSize,
+      @Query("search") String? search,
+      @Query("min_lat") double? minLat,
+      @Query("max_lat") double? maxLat,
+      @Query("min_lng") double? minLng,
+      @Query("max_lng") double? maxLng);
 
   @GET("needs/")
-  Future<GenericResponse<GenericListResponse<List<NeedModel>>>> needs(@Query("page") int page, @Query("page_size") int page_size, @Query("search") String? search);
+  Future<GenericResponse<GenericListResponse<List<NeedModel>>>> needs(
+      @Query("page") int page,
+      @Query("page_size") int pageSize,
+      @Query("search") String? search);
 
   @GET("organizers/")
-  Future<GenericResponse<GenericListResponse<List<ProfileModel>>>> organizers(@Query("page") int page, @Query("page_size") int page_size, @Query("search") String? search);
+  Future<GenericResponse<GenericListResponse<List<ProfileModel>>>> organizers(
+      @Query("page") int page,
+      @Query("page_size") int pageSize,
+      @Query("search") String? search,
+      @Query("min_lat") double? minLat,
+      @Query("max_lat") double? maxLat,
+      @Query("min_lng") double? minLng,
+      @Query("max_lng") double? maxLng);
 
   @GET("categories/")
-  Future<GenericResponse<GenericListResponse<List<CategoryModel>>>> categories(@Query("page") int page, @Query("page_size") int page_size, @Query("search") String? search);
+  Future<GenericResponse<GenericListResponse<List<CategoryModel>>>> categories(
+      @Query("page") int page,
+      @Query("page_size") int pageSize,
+      @Query("search") String? search);
 
 
 
   @GET("user/photos/")
-  Future<GenericResponse<GenericListResponse<List<ImageModel>>>> userPhotosList(@Query("page") int page, @Query("page_size") int page_size, @Query("search") String? search);
+  Future<GenericResponse<GenericListResponse<List<ImageModel>>>> userPhotosList(
+      @Query("page") int page,
+      @Query("page_size") int pageSize,
+      @Query("search") String? search);
 
   // @POST("user/photos/")
   // Future<GenericResponse<ImageModel>> userPhotosCreate();
@@ -56,12 +79,18 @@ abstract class ApiCalls {
   Future<GenericResponse<ProfileModel>> userProfileUpdate(@Body() EditProfileReqeust request);
 
   @GET("user/notifications/")
-  Future<GenericResponse<GenericListResponse<List<NotificationModel>>>> userNotifications(@Query("page") int page, @Query("page_size") int page_size, @Query("search") String? search);
+  Future<GenericResponse<GenericListResponse<List<NotificationModel>>>> userNotifications(
+      @Query("page") int page,
+      @Query("page_size") int pageSize,
+      @Query("search") String? search);
 
 
 
   @GET("giver/provide/")
-  Future<GenericResponse<GenericListResponse<List<NeedModel>>>> giverProvideList(@Query("page") int page, @Query("page_size") int page_size, @Query("search") String? search);
+  Future<GenericResponse<GenericListResponse<List<NeedModel>>>> giverProvideList(
+      @Query("page") int page,
+      @Query("page_size") int pageSize,
+      @Query("search") String? search);
 
   @POST("giver/provide/")
   Future<GenericResponse<NeedModel>> giverProvideNeed(@Body() ProvideNeedReqeust request);
@@ -69,7 +98,10 @@ abstract class ApiCalls {
 
 
   @GET("taker/needs/")
-  Future<GenericResponse<GenericListResponse<List<NeedModel>>>> takerNeedsList(@Query("page") int page, @Query("page_size") int page_size, @Query("search") String? search);
+  Future<GenericResponse<GenericListResponse<List<NeedModel>>>> takerNeedsList(
+      @Query("page") int page,
+      @Query("page_size") int pageSize,
+      @Query("search") String? search);
 
   @DELETE("taker/needs/{id}")
   Future<GenericResponse<NeedModel>> takerNeedsDelete(@Path("id") int id);
@@ -84,15 +116,20 @@ abstract class ApiCalls {
   Future<GenericResponse<PointModel>> takerPointUpdate(@Body() EditPointRequest request);
 
   @GET("taker/verify/")
-  Future<GenericResponse<GenericListResponse<List<VerificationRequestModel>>>> takerVerificationRequestsList(@Query("page") int page, @Query("page_size") int page_size, @Query("search") String? search);
+  Future<GenericResponse<GenericListResponse<List<VerificationRequestModel>>>> takerVerificationRequestsList(
+      @Query("page") int page,
+      @Query("page_size") int pageSize,
+      @Query("search") String? search);
 
   @POST("taker/verify/")
   Future<GenericResponse<VerificationRequestModel>> takerVerificationRequestsCreate(@Body() VerificationRequest request);
 
 
-
   @GET("organizer/requests/")
-  Future<GenericResponse<GenericListResponse<List<VerificationRequestModel>>>> organizerVerificationRequestsList();
+  Future<GenericResponse<GenericListResponse<List<VerificationRequestModel>>>> organizerVerificationRequestsList(
+      @Query("page") int page,
+      @Query("page_size") int pageSize,
+      @Query("search") String? search);
 
   @POST("organizer/requests/")
   Future<GenericResponse<VerificationRequestModel>> organizerVerificationRequestsCreate(@Body() ConfirmationRequest request);

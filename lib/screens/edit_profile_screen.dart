@@ -173,6 +173,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         )));
 
                       }
+                      else{
+                        widget.toast(context, "check_fields");
+                      }
                     },
                     child: Text(
                       'Submit',

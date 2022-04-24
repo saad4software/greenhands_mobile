@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -27,95 +25,41 @@ class ApiBloc extends Bloc<ApiEvent, ApiState> {
 
   void _onEvent(ApiEvent event,Emitter<ApiState> emit) async {
     emit(ApiDataLoading());
-    try{
-      debugPrint("Api event");
-      if (event is ApiRequest){
-        debugPrint("Api request");
 
-        var responses = [];
-        for (Function fun in event.functions){
+    if (event is ApiRequest){
+
+      var responses = [];
+      for (Function fun in event.functions){
+
+        try {
           var res = await fun(repository);
 
-          if (res is GenericResponse){
-            if (res.status == "success"){
-              responses.add(res);
+          // successful response
+          responses.add(res);
+
+        } catch(exception){
+          if(exception is DioError){
+            switch(exception.type){
+              case DioErrorType.response:
+                final data = GenericResponse.fromJson(exception.response?.data, ()=>null);
+                emit(ApiError(message: data.message, dioErrorType: exception.type));
+                break;
+              case DioErrorType.other:
+              case DioErrorType.cancel:
+              case DioErrorType.connectTimeout:
+              case DioErrorType.receiveTimeout:
+              case DioErrorType.sendTimeout:
+                emit(ApiError(dioErrorType: exception.type));
             }
-            else{
-              emit(ApiError(res.message ?? "no_message"));
-            }
-          } else{
-            responses.add(res);
           }
+
         }
-        emit(ApiDataReady(responses: responses));
-
       }
 
-    } catch(exception){
-      debugPrint(exception.toString());
-      var msg = "error";
-      switch (exception.runtimeType) {
-        case DioError:
-        // Here's the sample to get the failed response error code and message
-          final res = (exception as DioError);
-          msg = res.type.toString();
-          debugPrint(msg);
+      emit(ApiDataReady(responses: responses));
 
-          break;
-        default:
-
-      }
-      emit(ApiError(msg));
     }
 
   }
-
-  // @override
-  // Stream<ApiState> mapEventToState(
-  //     ApiEvent event,
-  //     ) async* {
-  //   yield ApiDataLoading();
-  //
-  //   try{
-  //     print("Api event");
-  //
-  //     if (event is ApiRequest){
-  //       print("Api request");
-  //
-  //       var responses = [];
-  //       for (Function fun in event.functions){
-  //         var res = await fun(apiCalls);
-  //         if (res is GenericResponse){
-  //           if (res.code == 200){
-  //             responses.add(res);
-  //           }
-  //           else{
-  //             yield ApiError(res.message ?? "No message");
-  //           }
-  //         }
-  //       }
-  //       yield ApiDataReady(responses: responses);
-  //
-  //     }
-  //
-  //   } catch(exception){
-  //     print("api_bloc error!!!");
-  //     print(exception.runtimeType);
-  //     var msg = "error";
-  //     switch (exception.runtimeType) {
-  //       case DioError:
-  //       // Here's the sample to get the failed response error code and message
-  //         final res = (exception as DioError);
-  //         // print(res.message);
-  //         msg = res.message;
-  //
-  //         break;
-  //       default:
-  //
-  //     }
-  //     yield ApiError(msg);
-  //   }
-  //
-  // }
 
 }

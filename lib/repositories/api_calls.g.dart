@@ -87,12 +87,16 @@ class _ApiCalls implements ApiCalls {
 
   @override
   Future<GenericResponse<GenericListResponse<List<PointModel>>>> points(
-      page, page_size, search) async {
+      page, pageSize, search, minLat, maxLat, minLng, maxLng) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'page': page,
-      r'page_size': page_size,
-      r'search': search
+      r'page_size': pageSize,
+      r'search': search,
+      r'min_lat': minLat,
+      r'max_lat': maxLat,
+      r'min_lng': minLng,
+      r'max_lng': maxLng
     };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
@@ -117,11 +121,11 @@ class _ApiCalls implements ApiCalls {
 
   @override
   Future<GenericResponse<GenericListResponse<List<NeedModel>>>> needs(
-      page, page_size, search) async {
+      page, pageSize, search) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'page': page,
-      r'page_size': page_size,
+      r'page_size': pageSize,
       r'search': search
     };
     queryParameters.removeWhere((k, v) => v == null);
@@ -147,12 +151,16 @@ class _ApiCalls implements ApiCalls {
 
   @override
   Future<GenericResponse<GenericListResponse<List<ProfileModel>>>> organizers(
-      page, page_size, search) async {
+      page, pageSize, search, minLat, maxLat, minLng, maxLng) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'page': page,
-      r'page_size': page_size,
-      r'search': search
+      r'page_size': pageSize,
+      r'search': search,
+      r'min_lat': minLat,
+      r'max_lat': maxLat,
+      r'min_lng': minLng,
+      r'max_lng': maxLng
     };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
@@ -177,11 +185,11 @@ class _ApiCalls implements ApiCalls {
 
   @override
   Future<GenericResponse<GenericListResponse<List<CategoryModel>>>> categories(
-      page, page_size, search) async {
+      page, pageSize, search) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'page': page,
-      r'page_size': page_size,
+      r'page_size': pageSize,
       r'search': search
     };
     queryParameters.removeWhere((k, v) => v == null);
@@ -207,11 +215,11 @@ class _ApiCalls implements ApiCalls {
 
   @override
   Future<GenericResponse<GenericListResponse<List<ImageModel>>>> userPhotosList(
-      page, page_size, search) async {
+      page, pageSize, search) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'page': page,
-      r'page_size': page_size,
+      r'page_size': pageSize,
       r'search': search
     };
     queryParameters.removeWhere((k, v) => v == null);
@@ -289,11 +297,11 @@ class _ApiCalls implements ApiCalls {
 
   @override
   Future<GenericResponse<GenericListResponse<List<NotificationModel>>>>
-      userNotifications(page, page_size, search) async {
+      userNotifications(page, pageSize, search) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'page': page,
-      r'page_size': page_size,
+      r'page_size': pageSize,
       r'search': search
     };
     queryParameters.removeWhere((k, v) => v == null);
@@ -319,11 +327,11 @@ class _ApiCalls implements ApiCalls {
 
   @override
   Future<GenericResponse<GenericListResponse<List<NeedModel>>>>
-      giverProvideList(page, page_size, search) async {
+      giverProvideList(page, pageSize, search) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'page': page,
-      r'page_size': page_size,
+      r'page_size': pageSize,
       r'search': search
     };
     queryParameters.removeWhere((k, v) => v == null);
@@ -367,11 +375,11 @@ class _ApiCalls implements ApiCalls {
 
   @override
   Future<GenericResponse<GenericListResponse<List<NeedModel>>>> takerNeedsList(
-      page, page_size, search) async {
+      page, pageSize, search) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'page': page,
-      r'page_size': page_size,
+      r'page_size': pageSize,
       r'search': search
     };
     queryParameters.removeWhere((k, v) => v == null);
@@ -467,11 +475,11 @@ class _ApiCalls implements ApiCalls {
 
   @override
   Future<GenericResponse<GenericListResponse<List<VerificationRequestModel>>>>
-      takerVerificationRequestsList(page, page_size, search) async {
+      takerVerificationRequestsList(page, pageSize, search) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'page': page,
-      r'page_size': page_size,
+      r'page_size': pageSize,
       r'search': search
     };
     queryParameters.removeWhere((k, v) => v == null);
@@ -518,9 +526,14 @@ class _ApiCalls implements ApiCalls {
 
   @override
   Future<GenericResponse<GenericListResponse<List<VerificationRequestModel>>>>
-      organizerVerificationRequestsList() async {
+      organizerVerificationRequestsList(page, pageSize, search) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'page': page,
+      r'page_size': pageSize,
+      r'search': search
+    };
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(_setStreamType<

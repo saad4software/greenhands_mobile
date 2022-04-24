@@ -68,8 +68,6 @@ class UserInfoScreen extends StatelessWidget {
                         debugPrint(state.msg);
                         return ListTile(
                           title: Text(state.msg ?? "no msg"),
-                          onTap: () =>
-                              apiBloc.add(ApiRequest.single((p0) => p0.organizers(1, 10, ""))),
                         );
                       },
                     ),

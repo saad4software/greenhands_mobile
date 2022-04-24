@@ -136,7 +136,6 @@ class PickLocationScreenState extends State<PickLocationScreen> {
                     onMapCreated: _onMapCreated,
                     initialCameraPosition: const CameraPosition(target: LatLng(0, 0)),
                     markers: Set<Marker>.of(markers.values),
-                    myLocationEnabled: true,
                     onTap: _handleTap,
                   ),
                 )

@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -10,6 +9,9 @@ class PrefModel {
   PrefModel.normal({
     this.token,
     this.role,
+    this.lat,
+    this.lng,
+
   });
 
   PrefModel._internal() {
@@ -17,6 +19,9 @@ class PrefModel {
   }
   String? token;
   String? role;
+  double? lat;
+  double? lng;
+
 
   void loadData(SharedPreferences preferences){
     final jsonString = preferences.getString("model") ?? "{}";
@@ -31,11 +36,15 @@ class PrefModel {
   factory PrefModel.fromJson(Map<String,dynamic> json) => PrefModel.normal(
     token: json['token'] != null ? json['token'] as String : null,
     role: json['role'] != null ? json['role'] as String : null,
+    lat: json['lat'] != null ? json['lat'] as double : null,
+    lng: json['lng'] != null ? json['lng'] as double : null,
   );
 
   Map<String, dynamic> toJson() => {
     'token': token,
     'role': role,
+    'lat': lat,
+    'lng': lng,
   };
 
 

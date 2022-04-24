@@ -6,8 +6,10 @@ import 'package:greenhands_mobile/models/index.dart';
 import 'package:greenhands_mobile/screens/edit_profile_screen.dart';
 import 'package:greenhands_mobile/screens/map_screen.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:greenhands_mobile/screens/organizer_home.dart';
 import 'package:greenhands_mobile/screens/pick_location_screen.dart';
 import 'package:greenhands_mobile/screens/user_info_screen.dart';
+import 'package:greenhands_mobile/utils/pref_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:greenhands_mobile/extensions/widget_extension.dart';
 
@@ -32,10 +34,13 @@ class IntroScreen extends StatelessWidget {
         child: BlocListener<ApiBloc, ApiState>(
           listener: (context, state) {
             if (state is ApiDataReady) {
+              apiBloc.setToken(PrefModel.instance.token);
               final response = state.getValue<TokenModel>();
-              if(response != null){
-                gotoSection(context: context, screen: UserInfoScreen());
+              if(response?.role == "G"){
+                gotoSection(context: context, screen: OrganizerHome());
               }
+
+
             }
           },
           child: Container(
