@@ -9,7 +9,7 @@ import 'network_interceptor.dart';
 
 part 'api_calls.g.dart';
 
-@RestApi(baseUrl: "http://172.16.246.1:8000/api/")
+@RestApi(baseUrl: "http://172.16.126.1:8000/api/")
 abstract class ApiCalls {
   factory ApiCalls(Dio dio,{String baseUrl}) = _ApiCalls;
 

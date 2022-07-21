@@ -8,7 +8,7 @@ part of 'api_calls.dart';
 
 class _ApiCalls implements ApiCalls {
   _ApiCalls(this._dio, {this.baseUrl}) {
-    baseUrl ??= 'http://172.16.246.1:8000/api/';
+    baseUrl ??= 'http://172.16.126.1:8000/api/';
   }
 
   final Dio _dio;
