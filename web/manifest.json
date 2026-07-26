@@ -1,6 +1,6 @@
 {
-    "name": "greenhands_mobile",
-    "short_name": "greenhands_mobile",
+    "name": "greenhands",
+    "short_name": "greenhands",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
